@@ -26,7 +26,4 @@ public class Player {
     private int turnedPro;
     private double height;
     private double weight;
-
-    @ManyToMany(mappedBy = "players")
-    private List<Match> matches;
 }
