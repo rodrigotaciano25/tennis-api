@@ -27,10 +27,9 @@ public class PlayerService {
     public Player updatePlayer(Player player){
         Player existingPlayer = getPlayerById(player.getId());
         if (existingPlayer != null){
-            existingPlayer.setName(player.getName());
             existingPlayer.setRank(player.getRank());
-            if (existingPlayer.getRank() > player.getCareerHighestRank()){
-                existingPlayer.setCareerHighestRank(player.getCareerHighestRank());
+            if (player.getRank() < existingPlayer.getCareerHighestRank()){
+                existingPlayer.setCareerHighestRank(player.getRank());
             }
             existingPlayer.setTitles(player.getTitles());
             existingPlayer.setPrizeMoney(player.getPrizeMoney());
