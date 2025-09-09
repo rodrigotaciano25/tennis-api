@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  tennis-postgres:
+    image: postgres:15-alpine
+    container_name: tennis-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: tennis_db
+      POSTGRES_USER: tennis_user
+      POSTGRES_PASSWORD: tennis_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - tennis_postgres_data:/var/lib/postgresql/data
+    networks:
+      - tennis-network
+
+  # Opcional: Interface web para gerenciar o banco
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: tennis-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@tennis.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      - tennis-postgres
+    networks:
+      - tennis-network
+
+volumes:
+  tennis_postgres_data:
+
+networks:
+  tennis-network:
+    driver: bridge
