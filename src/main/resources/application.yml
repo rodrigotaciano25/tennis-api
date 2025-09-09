@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tennis-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tennis_db
+    username: tennis_user
+    password: tennis_password
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+      springframework:
+        web: DEBUG
+
+# ? JWT configs (vais usar depois no JwtUtil)
+jwt:
+  secret: my-super-secret-key
+  expiration: 3600000 # 1h em ms
+  issuer: tennis-api
