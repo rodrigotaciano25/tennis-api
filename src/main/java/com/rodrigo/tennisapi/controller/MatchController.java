@@ -44,6 +44,7 @@ public class MatchController {
         return new ResponseEntity<>(matchService.findByTournamentName(name), HttpStatus.OK);
     }
 
+    /*
     @GetMapping("/winner/{playerId}")
     public ResponseEntity<List<Match>> getMatchesByWinner(@PathVariable Long playerId) {
         Player winner = playerService.getPlayerById(playerId);
@@ -52,6 +53,7 @@ public class MatchController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+     */
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMatch(@PathVariable Long id) {

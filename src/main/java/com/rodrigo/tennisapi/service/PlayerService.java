@@ -6,40 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
-    @Autowired
-    PlayerRepository playerRepository;
 
-    public List<Player> getAllPlayers(){
-        return playerRepository.findAll();
+    private final PlayerRepository playerRepository;
+
+    public PlayerService(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
     }
 
-    public Player getPlayerById(Long id){
-        return playerRepository.findById(id).orElse(null);
-    }
-
-    public Player createPlayer(Player player){
+    public Player savePlayer(Player player) {
         return playerRepository.save(player);
     }
 
-    public Player updatePlayer(Player player){
-        Player existingPlayer = getPlayerById(player.getId());
-        if (existingPlayer != null){
-            existingPlayer.setRank(player.getRank());
-            if (player.getRank() < existingPlayer.getCareerHighestRank()){
-                existingPlayer.setCareerHighestRank(player.getRank());
-            }
-            existingPlayer.setTitles(player.getTitles());
-            existingPlayer.setPrizeMoney(player.getPrizeMoney());
-            return playerRepository.save(existingPlayer);
-        } else {
-            return null;
-        }
+    public Optional<Player> getPlayerById(Long id) {
+        return playerRepository.findById(id);
     }
 
-    public void deletePlayer(Long id){
-        playerRepository.deleteById(id);
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAll();
     }
 }
