@@ -9,6 +9,7 @@ public class PlayerMapper {
         dto.setId(player.getId());
         dto.setName(player.getName());
         dto.setAge(player.getAge());
+        dto.setRank(player.getRank());
         return dto;
     }
 
@@ -17,6 +18,7 @@ public class PlayerMapper {
         player.setId(dto.getId());
         player.setName(dto.getName());
         player.setAge(dto.getAge());
+        player.setRank(dto.getRank());
         return player;
     }
 }

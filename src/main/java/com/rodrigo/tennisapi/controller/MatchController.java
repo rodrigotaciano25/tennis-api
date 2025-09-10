@@ -1,5 +1,9 @@
 package com.rodrigo.tennisapi.controller;
 
+import com.rodrigo.tennisapi.dto.MatchDTO;
+import com.rodrigo.tennisapi.dto.PlayerDTO;
+import com.rodrigo.tennisapi.dto.PlayerNameRankDTO;
+import com.rodrigo.tennisapi.dto.WinnerDTO;
 import com.rodrigo.tennisapi.entity.Match;
 import com.rodrigo.tennisapi.entity.Player;
 import com.rodrigo.tennisapi.service.MatchService;
@@ -15,11 +19,14 @@ import java.util.List;
 @RequestMapping("/api/v1/matches")
 public class MatchController {
 
-    @Autowired
-    private MatchService matchService;
+    private final MatchService matchService;
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
+
+    public MatchController(PlayerService playerService, MatchService matchService) {
+        this.playerService = playerService;
+        this.matchService = matchService;
+    }
 
     @PostMapping
     public ResponseEntity<Match> createMatch(@RequestBody Match match) {
@@ -28,9 +35,23 @@ public class MatchController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Match>> getAllMatches() {
-        return new ResponseEntity<>(matchService.getAllMatches(), HttpStatus.OK);
+    public ResponseEntity<List<MatchDTO>> getAllMatches() {
+        List<MatchDTO> matches = matchService.getAllMatches().stream().map(match ->
+                new MatchDTO(
+                        match.getId(),
+                        match.getTournamentName(),
+                        match.getRound(),
+                        match.getScore(),
+                        match.getPlayers().stream()
+                                .map(player -> new PlayerNameRankDTO(player.getName(), player.getRank()))
+                                .toList(),
+                        new WinnerDTO(match.getWinner().getName(), match.getWinner().getRank())
+                )
+        ).toList();
+
+        return new ResponseEntity<>(matches, HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Match> getMatchById(@PathVariable Long id) {

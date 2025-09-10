@@ -1,5 +1,6 @@
 package com.rodrigo.tennisapi.dto;
 
+import com.rodrigo.tennisapi.entity.Player;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -15,5 +16,7 @@ public class PlayerDTO {
 
     @Min(value = 0, message = "Age must be positive")
     private int age;
+
+    private int rank;
 
 }
